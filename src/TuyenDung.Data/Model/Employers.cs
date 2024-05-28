@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TuyenDung.Data.Model
 {
-    public class Employers
+    public class Employers //Nhà tuyển dụng
     {
         public int Id { get; set; }
         public string Name { get; set; }

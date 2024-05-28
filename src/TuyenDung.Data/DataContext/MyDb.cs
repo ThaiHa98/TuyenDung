@@ -15,9 +15,10 @@ namespace TuyenDung.Data.DataContext
         public DbSet<User> Users { get; set; }
         public DbSet<Applications> Applications { get; set; }
         public DbSet<Employers> Employers { get; set; }
-        public DbSet<Job_seekers> job_Seekers { get; set; }
-        public DbSet<Jobs> jobs { get; set; }
-        public DbSet<Messages> messages { get; set; }
+        public DbSet<Job_seekers> Job_Seekers { get; set; }
+        public DbSet<Jobs> Jobs { get; set; }
+        public DbSet<Messages> Messages { get; set; }
+        public DbSet<AccessToken> AccessTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -36,6 +37,14 @@ namespace TuyenDung.Data.DataContext
             modelBuilder.Entity<Applications>()
                 .Property(x => x.StatusSubmissionType)
                 .HasConversion<string>();
+
+            modelBuilder.Entity<Jobs>()
+                .Property(x => x.Salary)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Messages>()
+                .Property(x => x.Content)
+                .HasColumnType("TEXT");
         }
     }
 }

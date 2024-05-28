@@ -7,7 +7,7 @@ using TuyenDung.Data.Model.Enum;
 
 namespace TuyenDung.Data.Model
 {
-    public class Jobs
+    public class Jobs //Viec lam
     {
         public int Id { get; set; }
         public string Name { get; set; }
