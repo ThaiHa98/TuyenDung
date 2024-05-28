@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace TuyenDung.Data.Model
 {
     public class Jobs //Viec lam
     {
+        [Key]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Title { get; set; } // lưu trữ tiêu đề của công việc
@@ -20,5 +22,8 @@ namespace TuyenDung.Data.Model
         public StatusJobs Status { get; set; }
         public DateTime PostedDate { get; set; }
         public DateTime Deadline { get; set;}
+
+        public int EmployerId { get; set; }
+        public Employers Employer { get; set; }
     }
 }
