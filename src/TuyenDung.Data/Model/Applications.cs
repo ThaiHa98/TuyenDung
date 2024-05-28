@@ -17,6 +17,6 @@ namespace TuyenDung.Data.Model
         public StatusApplication Status { get; set; }
         public DateTime Date { get; set; }
         public StatusSubmissionType StatusSubmissionType { get; set; }
-        public string CvSubmissionDetails { get; set; } // Chi tiết gửi CV
+        public string CvFilePath { get; set; } // Chi tiết gửi CV
     }
 }

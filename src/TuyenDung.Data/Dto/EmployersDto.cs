@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TuyenDung.Data.Model
+namespace TuyenDung.Data.Dto
 {
-    public class Employers //Nhà tuyển dụng
+    public class EmployersDto
     {
-        [Key]
-        public int Id { get; set; }
         public string Name { get; set; }
-        public string Image { get; set; }
         public string Industry { get; set; } // Ngành công nghiệp
-        public string Website {  get; set; }  //web của công ty
+        public string Website { get; set; }  //web của công ty
         public string Address { get; set; }
         public string ContactName { get; set; }
         public string ContactPosition { get; set; }//Liên hệ vị trí
