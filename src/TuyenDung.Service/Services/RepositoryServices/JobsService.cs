@@ -24,7 +24,7 @@ namespace TuyenDung.Service.Services.RepositoryServices
                 {
                     throw new ArgumentNullException(nameof(jobsDto), "All data fields have not been filled in");
                 }
-                var employers = _dbContext.Jobs.FirstOrDefault(x => x.Id == jobsDto.EmployerId);
+                var employers = _iJobsInterface.GetById(jobsDto.EmployerId);
                 if (employers == null)
                 {
                     throw new Exception("employersId not found");
@@ -57,7 +57,7 @@ namespace TuyenDung.Service.Services.RepositoryServices
         {
             try
             {
-                var jobs = _iJobsInterface.GetById(id);
+                var jobs = _dbContext.Jobs.FirstOrDefault(x => x.Id == id);
                 if(jobs == null)
                 {
                     throw new Exception("Id not found");
@@ -76,7 +76,7 @@ namespace TuyenDung.Service.Services.RepositoryServices
         {
             try
             {
-                var jobsId = _iJobsInterface.GetById(jobsUpdateDto.Id);
+                var jobsId = _dbContext.Jobs.FirstOrDefault(x => x.Id == jobsUpdateDto.Id);
                 if(jobsId == null)
                 {
                     throw new Exception("jobsId not found");

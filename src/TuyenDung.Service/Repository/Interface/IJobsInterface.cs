@@ -9,6 +9,6 @@ namespace TuyenDung.Service.Repository.Interface
 {
     public interface IJobsInterface
     {
-        public Jobs GetById(int id);
+        public Jobs GetById(int EmployerId);
     }
 }
