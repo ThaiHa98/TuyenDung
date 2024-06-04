@@ -20,5 +20,6 @@ namespace TuyenDung.Data.Model
         public string ContactPosition { get; set; }//Liên hệ vị trí
         public string ContactEmail { get; set; }
         public string ContactPhone { get; set; }
+        public DateTime CreateDate { get; set; }
     }
 }

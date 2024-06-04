@@ -7,7 +7,7 @@ namespace TuyenDung.Service.Services.InterfaceIServices
     public interface IEmployersIService
     {
         public Employers Create(EmployersDto employersDto, IFormFile image);
-        Employers Update(Employers employers);
+        Employers Update(EmployersDto employersDto, IFormFile image);
         bool Delete(int id);
     }
 }

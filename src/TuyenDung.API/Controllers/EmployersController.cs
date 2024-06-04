@@ -3,43 +3,44 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using TuyenDung.API.Common;
 using TuyenDung.Data.Dto;
+using TuyenDung.Data.Model;
 using TuyenDung.Service.Services.InterfaceIServices;
 
 namespace TuyenDung.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class JobsController : ControllerBase
+    public class EmployersController : ControllerBase
     {
-        private readonly IJobsIService _jobsIService;
-        public JobsController(IJobsIService jobsIService)
+        private readonly IEmployersIService _employersIService;
+        public EmployersController(IEmployersIService employersService)
         {
-            _jobsIService = jobsIService;
+            _employersIService = employersService;
         }
         [HttpPost("Create")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public IActionResult Create([FromBody]JobsDto jobsDto)
+        public IActionResult CreateEmployers([FromForm] EmployersDto employersDto, [FromForm] IFormFile image)
         {
             try
             {
-                if(jobsDto == null)
+                if(employersDto == null)
                 {
                     return BadRequest("All data fields have not been filled in");
                 }
-                var create = _jobsIService.Create(jobsDto);
+                var employers = _employersIService.Create(employersDto,image);
                 return Ok(new XBaseResult
                 {
-                    data = create,
+                    data = employers,
                     success = true,
                     httpStatusCode = (int)HttpStatusCode.OK,
-                    totalCount = create.Id,
-                    message = "Create Jobs Successfully"
+                    totalCount = employers.Id,
+                    message = "Create employers Successfully"
                 });
             }
             catch (Exception ex)
             {
-                return BadRequest(new XBaseResult()
+                return BadRequest(new XBaseResult
                 {
                     success = false,
                     httpStatusCode = (int)HttpStatusCode.BadRequest,
@@ -50,25 +51,25 @@ namespace TuyenDung.API.Controllers
         [HttpPut("Update")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public IActionResult Update([FromBody]JobsUpdateDto jobsUpdateDto) 
+        public IActionResult Update([FromForm]EmployersDto employersDto, [FromForm] IFormFile image)
         {
             try
             {
-                if (jobsUpdateDto == null)
+                if(employersDto == null || image == null)
                 {
                     return BadRequest("All data fields have not been filled in");
                 }
-                var updateJobs = _jobsIService.Update(jobsUpdateDto);
+                var employers = _employersIService.Update(employersDto, image);
                 return Ok(new XBaseResult
                 {
-                    data = updateJobs,
+                    data = employers,
                     success = true,
                     httpStatusCode = (int)HttpStatusCode.OK,
-                    totalCount = updateJobs.Id,
-                    message = "Update Jobs Successfully"
+                    totalCount = employers.Id,
+                    message = "Update Employers Successfully"
                 });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(new XBaseResult
                 {
@@ -85,16 +86,20 @@ namespace TuyenDung.API.Controllers
         {
             try
             {
-                var deleteJobs = _jobsIService.Delete(id);
+                if(id == null)
+                {
+                    return BadRequest("id not found");
+                }
+                var employers = _employersIService.Delete(id);
                 return Ok(new XBaseResult
                 {
-                    data = deleteJobs,
+                    data = employers,
                     success = true,
                     httpStatusCode = (int)HttpStatusCode.OK,
-                    message = "Delete Successfully"
+                    message = "Delete Employers Successfully"
                 });
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return BadRequest(new XBaseResult
                 {

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using TuyenDung.API.Helper;
 using TuyenDung.Data.DataContext;
@@ -21,6 +20,11 @@ builder.Services.AddDbContext<MyDb>(options =>
 builder.Services.AddScoped<IUserIServices, UserServices>();
 builder.Services.AddScoped<IUserInterface, UserRepository>();
 builder.Services.AddScoped<Token>();
+builder.Services.AddScoped<IJobsInterface, JobsRepository>();
+builder.Services.AddScoped<IJobsIService, JobsService>();
+builder.Services.AddScoped<IJob_seekersIService, Job_seekersService>();
+builder.Services.AddScoped<IEmployersInterface, EmployersRepository>();
+builder.Services.AddScoped<IEmployersIService, EmployersService>();
 
 // Add services to the container.
 

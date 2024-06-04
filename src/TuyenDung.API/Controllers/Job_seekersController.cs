@@ -9,63 +9,31 @@ namespace TuyenDung.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class JobsController : ControllerBase
+    public class Job_seekersController : ControllerBase
     {
-        private readonly IJobsIService _jobsIService;
-        public JobsController(IJobsIService jobsIService)
+        private readonly IJob_seekersIService _job_SeekersIService;
+        public Job_seekersController(IJob_seekersIService job_SeekersService)
         {
-            _jobsIService = jobsIService;
+            _job_SeekersIService = job_SeekersService;
         }
         [HttpPost("Create")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public IActionResult Create([FromBody]JobsDto jobsDto)
+        public IActionResult Create([FromForm]Job_seekersDto job_seekersDto,[FromForm] IFormFile image)
         {
             try
             {
-                if(jobsDto == null)
+                if(job_seekersDto == null || image == null)
                 {
-                    return BadRequest("All data fields have not been filled in");
+                    return BadRequest("job_seekersDto & image not found");
                 }
-                var create = _jobsIService.Create(jobsDto);
+                var createjob_seekers = _job_SeekersIService.Create(job_seekersDto, image);
                 return Ok(new XBaseResult
                 {
-                    data = create,
+                    data = createjob_seekers,
                     success = true,
                     httpStatusCode = (int)HttpStatusCode.OK,
-                    totalCount = create.Id,
-                    message = "Create Jobs Successfully"
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new XBaseResult()
-                {
-                    success = false,
-                    httpStatusCode = (int)HttpStatusCode.BadRequest,
-                    message = ex.Message
-                });
-            }
-        }
-        [HttpPut("Update")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-        public IActionResult Update([FromBody]JobsUpdateDto jobsUpdateDto) 
-        {
-            try
-            {
-                if (jobsUpdateDto == null)
-                {
-                    return BadRequest("All data fields have not been filled in");
-                }
-                var updateJobs = _jobsIService.Update(jobsUpdateDto);
-                return Ok(new XBaseResult
-                {
-                    data = updateJobs,
-                    success = true,
-                    httpStatusCode = (int)HttpStatusCode.OK,
-                    totalCount = updateJobs.Id,
-                    message = "Update Jobs Successfully"
+                    message = "Create job_seekers Successfully"
                 });
             }
             catch(Exception ex)
@@ -78,23 +46,53 @@ namespace TuyenDung.API.Controllers
                 });
             }
         }
-        [HttpDelete("Delete")]
+        [HttpPut("Update")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public IActionResult Delete(int id)
+        public IActionResult Update([FromForm] Job_seekersDto job_seekersDto, [FromForm] IFormFile image)
         {
             try
             {
-                var deleteJobs = _jobsIService.Delete(id);
+                if (job_seekersDto == null || image == null)
+                {
+                    return BadRequest("job_seekersDto & image not found");
+                }
+                var updatejob_seekers = _job_SeekersIService.Update(job_seekersDto, image);
                 return Ok(new XBaseResult
                 {
-                    data = deleteJobs,
+                    data = updatejob_seekers,
                     success = true,
                     httpStatusCode = (int)HttpStatusCode.OK,
-                    message = "Delete Successfully"
+                    message = "Update job_seekers Successfull"
                 });
             }
             catch (Exception ex)
+            {
+                return BadRequest(new XBaseResult
+                {
+                    success = false,
+                    httpStatusCode = (int)HttpStatusCode.BadRequest,
+                    message = ex.Message
+                });
+            }
+        }
+        [HttpDelete("Delete")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public IActionResult Delete(int id) 
+        {
+            try
+            {
+                var delete = _job_SeekersIService.Delete(id);
+                return Ok(new XBaseResult
+                {
+                    data = delete,
+                    success = true,
+                    httpStatusCode = (int)HttpStatusCode.OK,
+                    message = "Delet job_seekers Successfully"
+                });
+            }
+            catch(Exception ex)
             {
                 return BadRequest(new XBaseResult
                 {

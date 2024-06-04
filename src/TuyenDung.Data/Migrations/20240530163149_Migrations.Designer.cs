@@ -12,7 +12,7 @@ using TuyenDung.Data.DataContext;
 namespace TuyenDung.Data.Migrations
 {
     [DbContext(typeof(MyDb))]
-    [Migration("20240528154959_Migrations")]
+    [Migration("20240530163149_Migrations")]
     partial class Migrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -111,6 +111,9 @@ namespace TuyenDung.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -139,6 +142,9 @@ namespace TuyenDung.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DateofBirth")
                         .IsRequired()

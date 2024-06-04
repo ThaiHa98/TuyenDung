@@ -1,11 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using TuyenDung.Data.DataContext;
 using TuyenDung.Data.Dto;
 using TuyenDung.Data.Model;
@@ -30,7 +23,7 @@ namespace TuyenDung.Service.Services.RepositoryServices
                 }
                 Employers employers = new Employers
                 {
-                    Name = employersDto.Name,
+                    Name = employersDto.NameEmployers,
                     Industry = employersDto.Industry,
                     Website = employersDto.Website,
                     Address = employersDto.Address,
@@ -41,7 +34,7 @@ namespace TuyenDung.Service.Services.RepositoryServices
                 };
                 if(image != null && image.Length > 0)
                 {
-                    string imagePath = SaveProductImage(image);
+                    string imagePath = SaveEmployersImage(image);
                     employers.Image = imagePath;
                     _dbContext.Employers.Add(employers);
                     _dbContext.SaveChanges();
@@ -50,21 +43,63 @@ namespace TuyenDung.Service.Services.RepositoryServices
             }
             catch (Exception ex)
             {
-                throw new Exception("There is an error when creating a Produc", ex);
+                throw new Exception("There is an error when creating a employers", ex);
             }
         }
 
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var employers = _dbContext.Employers.FirstOrDefault(x => x.Id == id);
+                if(employers == null)
+                {
+                    throw new Exception("employersId not found");
+                }
+                _dbContext.Remove(employers);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("There was an error deleteting the employer");
+            }
         }
 
-        public Employers Update(Employers employers)
+        public Employers Update(EmployersDto employersDto, IFormFile image)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var employersDtoId = _dbContext.Employers.FirstOrDefault(x => x.Id == employersDto.Id);
+                if(employersDtoId == null)
+                {
+                    throw new Exception("employersDtoId not found");
+                }
+                employersDtoId.Id = employersDto.Id;
+                employersDtoId.Name = employersDto.NameEmployers;
+                employersDtoId.Industry = employersDto.Industry;
+                employersDtoId.Website = employersDto.Website;
+                employersDtoId.Address = employersDto.Address;
+                employersDtoId.ContactName = employersDto.ContactName;
+                employersDtoId.ContactPosition = employersDto.ContactPosition;
+                employersDtoId.ContactEmail = employersDto.ContactEmail;
+                employersDtoId.ContactPhone = employersDto.ContactPhone;
+                if(image !=  null && image.Length > 0)
+                {
+                    string imagePath = SaveEmployersImage(image);
+                    employersDto.Image = imagePath;
+                    _dbContext.Employers.Add(employersDtoId);
+                    _dbContext.SaveChanges();
+                }
+                return employersDtoId;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("There was an error updating the employer");
+            }
         }
 
-        private string SaveProductImage(IFormFile image)
+        private string SaveEmployersImage(IFormFile image)
         {
             try
             {

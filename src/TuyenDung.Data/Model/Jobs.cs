@@ -8,6 +8,7 @@ using TuyenDung.Data.Model.Enum;
 
 namespace TuyenDung.Data.Model
 {
+
     public class Jobs //Viec lam
     {
         [Key]

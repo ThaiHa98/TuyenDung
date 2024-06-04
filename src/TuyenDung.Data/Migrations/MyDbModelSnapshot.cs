@@ -109,6 +109,9 @@ namespace TuyenDung.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -137,6 +140,9 @@ namespace TuyenDung.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DateofBirth")
                         .IsRequired()

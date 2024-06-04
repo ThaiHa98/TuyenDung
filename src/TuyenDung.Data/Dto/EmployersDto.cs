@@ -8,7 +8,9 @@ namespace TuyenDung.Data.Dto
 {
     public class EmployersDto
     {
-        public string Name { get; set; }
+        public int Id { get; set; }
+        public string NameEmployers { get; set; }
+        public string Image { get; set; }
         public string Industry { get; set; } // Ngành công nghiệp
         public string Website { get; set; }  //web của công ty
         public string Address { get; set; }

@@ -57,7 +57,8 @@ namespace TuyenDung.Data.Migrations
                     ContactName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ContactPosition = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ContactEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ContactPhone = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ContactPhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,7 +75,8 @@ namespace TuyenDung.Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateofBirth = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
