@@ -12,7 +12,7 @@ using TuyenDung.Data.DataContext;
 namespace TuyenDung.Data.Migrations
 {
     [DbContext(typeof(MyDb))]
-    [Migration("20240530163149_Migrations")]
+    [Migration("20240605183940_Migrations")]
     partial class Migrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

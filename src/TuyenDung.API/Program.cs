@@ -25,6 +25,11 @@ builder.Services.AddScoped<IJobsIService, JobsService>();
 builder.Services.AddScoped<IJob_seekersIService, Job_seekersService>();
 builder.Services.AddScoped<IEmployersInterface, EmployersRepository>();
 builder.Services.AddScoped<IEmployersIService, EmployersService>();
+builder.Services.AddStackExchangeRedisCache(redisOptions =>
+{
+    string connection = builder.Configuration.GetConnectionString("Redis");
+    redisOptions.Configuration = connection;
+});
 
 // Add services to the container.
 

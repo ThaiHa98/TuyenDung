@@ -1,4 +1,7 @@
-﻿using TuyenDung.Data.DataContext;
+﻿using Microsoft.Extensions.Caching.Distributed;
+using System.Linq;
+using System.Text.Json;
+using TuyenDung.Data.DataContext;
 using TuyenDung.Data.Dto;
 using TuyenDung.Data.Model;
 using TuyenDung.Data.Model.Enum;
@@ -11,8 +14,10 @@ namespace TuyenDung.Service.Services.RepositoryServices
     {
         private readonly MyDb _dbContext;
         private readonly IJobsInterface _iJobsInterface;
-        public JobsService(MyDb dbContext, IJobsInterface iJobsInterface)
+        private readonly IDistributedCache _distributedCache;
+        public JobsService(MyDb dbContext, IJobsInterface iJobsInterface, IDistributedCache distributedCache)
         {
+            _distributedCache = distributedCache;
             _dbContext = dbContext;
             _iJobsInterface = iJobsInterface;
         }
@@ -43,8 +48,16 @@ namespace TuyenDung.Service.Services.RepositoryServices
                     PostedDate = DateTime.Now,
                     Deadline = jobsDto.Deadline
                 };
-                _dbContext.Jobs.Add(jobs);
-                _dbContext.SaveChanges();
+                //Tuan tu hoa doi tuong Jobs
+                var serializedJob = JsonSerializer.Serialize(jobs);
+                var cacheKey = $"Job_{jobs.Id}";
+
+                //luu va bo nho cache Redis voi thoi gian het han tuy tron
+                //var cacheOptions = new DistributedCacheEntryOptions
+                //{
+                //    AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1) // Lưu vào bộ nhớ cache trong 1 giờ
+                //};
+                _distributedCache.SetString(cacheKey, serializedJob);
                 return jobs;
             }
             catch (Exception ex)
@@ -57,13 +70,15 @@ namespace TuyenDung.Service.Services.RepositoryServices
         {
             try
             {
-                var jobs = _dbContext.Jobs.FirstOrDefault(x => x.Id == id);
-                if(jobs == null)
+                // Tạo khóa Redis cho công việc cần xóa
+                var cachekey = $"Job_{id}";
+                //Kiem tra jobs co ton tai hay k
+                var job = _distributedCache.Get(cachekey);
+                if (job == null)
                 {
-                    throw new Exception("Id not found");
+                    throw new Exception("Id not found in Redis");
                 }
-                _dbContext.Remove(jobs);
-                _dbContext.SaveChanges();
+                _distributedCache.Remove(cachekey);
                 return true;
             }
             catch(Exception ex)
@@ -76,22 +91,29 @@ namespace TuyenDung.Service.Services.RepositoryServices
         {
             try
             {
-                var jobsId = _dbContext.Jobs.FirstOrDefault(x => x.Id == jobsUpdateDto.Id);
-                if(jobsId == null)
+                var cacheKey = $"Job_{jobsUpdateDto.Id}";
+                //lay cong viec tu Redis
+                var jobsJson = _distributedCache.GetString(cacheKey);
+                if(jobsJson == null)
                 {
-                    throw new Exception("jobsId not found");
+                    throw new Exception("jobsId not found in Redis");
                 }
-                jobsId.Title = jobsUpdateDto.Title;
-                jobsId.Description = jobsUpdateDto.Description;
-                jobsId.Requirements = jobsUpdateDto.Requirements;
-                jobsId.Salary = jobsUpdateDto.Salary;
-                jobsId.Location = jobsUpdateDto.Location;
-                jobsId.JobType = jobsUpdateDto.JobType;
-                jobsId.Status = jobsUpdateDto.Status;
-                jobsId.Deadline = jobsUpdateDto.Deadline;
-                _dbContext.Jobs.Update(jobsId);
-                _dbContext.SaveChanges();
-                return jobsId;
+                //giai tuan tu doi tuong Jobs tu Json
+                var jobs = JsonSerializer.Deserialize<Jobs>(jobsJson);
+
+                jobs.Title = jobsUpdateDto.Title;
+                jobs.Description = jobsUpdateDto.Description;
+                jobs.Requirements = jobsUpdateDto.Requirements;
+                jobs.Salary = jobsUpdateDto.Salary;
+                jobs.Location = jobsUpdateDto.Location;
+                jobs.JobType = jobsUpdateDto.JobType;
+                jobs.Status = jobsUpdateDto.Status;
+                jobs.Deadline = jobsUpdateDto.Deadline;
+
+                //Tuan tu hoa lai doi tuong Jobs
+                var updatejobsJson = _distributedCache.GetString(cacheKey);
+                _distributedCache.SetString(cacheKey, jobsJson);
+                return jobs;
             }
             catch (Exception ex) 
             {

@@ -28,7 +28,7 @@ namespace TuyenDung.API.Controllers
                 {
                     return BadRequest("All data fields have not been filled in");
                 }
-                var employers = _employersIService.Create(employersDto,image);
+                var employers = _employersIService.Create(employersDto, image);
                 return Ok(new XBaseResult
                 {
                     data = employers,

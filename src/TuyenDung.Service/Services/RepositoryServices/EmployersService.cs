@@ -31,6 +31,7 @@ namespace TuyenDung.Service.Services.RepositoryServices
                     ContactPosition = employersDto.ContactPosition,
                     ContactEmail = employersDto.ContactEmail,
                     ContactPhone = employersDto.ContactPhone,
+                    CreateDate = DateTime.Now,
                 };
                 if(image != null && image.Length > 0)
                 {
@@ -87,7 +88,7 @@ namespace TuyenDung.Service.Services.RepositoryServices
                 if(image !=  null && image.Length > 0)
                 {
                     string imagePath = SaveEmployersImage(image);
-                    employersDto.Image = imagePath;
+                    employersDtoId.Image = imagePath;
                     _dbContext.Employers.Add(employersDtoId);
                     _dbContext.SaveChanges();
                 }
@@ -104,7 +105,7 @@ namespace TuyenDung.Service.Services.RepositoryServices
             try
             {
                 string currentDateFolder = DateTime.Now.ToString("dd-MM-yyyy");
-                string imagesFolder = Path.Combine(@"C:\Users\XuanThai\Desktop\ImageXedap", "Prodycts_images", currentDateFolder);
+                string imagesFolder = Path.Combine(@"C:\Users\Xuanthai98\OneDrive\Máy tính\ImageSlide", "Prodycts_images", currentDateFolder);
                 if (!Directory.Exists(imagesFolder))
                 {
                     Directory.CreateDirectory(imagesFolder);
