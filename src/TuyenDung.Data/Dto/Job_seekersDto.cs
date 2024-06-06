@@ -11,7 +11,6 @@ namespace TuyenDung.Data.Dto
         public int Id { get; set; }
         public int UserId_Job_seekers { get; set; }
         public string Name_Job_seekers { get; set; }
-        public string Image_Job_seekers { get; set; }
         public string DateofBirth_Job_seekers { get; set; }
         public string Gender_Job_seekers { get; set; }
     }

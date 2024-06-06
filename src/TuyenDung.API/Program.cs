@@ -25,10 +25,29 @@ builder.Services.AddScoped<IJobsIService, JobsService>();
 builder.Services.AddScoped<IJob_seekersIService, Job_seekersService>();
 builder.Services.AddScoped<IEmployersInterface, EmployersRepository>();
 builder.Services.AddScoped<IEmployersIService, EmployersService>();
+
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
+var configuration = builder.Configuration;
+
+if (configuration == null)
+{
+    throw new Exception("Configuration is null.");
+}
+
+var redisConnectionString = builder.Configuration.GetConnectionString("Redis");
+
+if (string.IsNullOrEmpty(redisConnectionString))
+{
+    throw new Exception("Redis connection string is missing or empty.");
+}
+
 builder.Services.AddStackExchangeRedisCache(redisOptions =>
 {
-    string connection = builder.Configuration.GetConnectionString("Redis");
-    redisOptions.Configuration = connection;
+    redisOptions.Configuration = redisConnectionString;
 });
 
 // Add services to the container.

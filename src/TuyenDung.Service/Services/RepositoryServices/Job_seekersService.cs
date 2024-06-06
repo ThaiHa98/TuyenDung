@@ -28,8 +28,13 @@ namespace TuyenDung.Service.Services.RepositoryServices
                     DateofBirth = job_seekersDto.DateofBirth_Job_seekers,
                     Gender = job_seekersDto.Gender_Job_seekers
                 };
-                _dbContext.Job_Seekers.Add(job_SeekersService);
-                _dbContext.SaveChanges();
+                if (image != null && image.Length > 0)
+                {
+                    string imagePath = SaveEmployersImage(image);
+                    job_SeekersService.Image = imagePath;
+                    _dbContext.Job_Seekers.Add(job_SeekersService);
+                    _dbContext.SaveChanges();
+                }
                 return job_SeekersService;
             }
             catch (Exception ex)
@@ -82,6 +87,30 @@ namespace TuyenDung.Service.Services.RepositoryServices
             catch(Exception ex)
             {
                 throw new Exception($"An error occurred while updating Job_seekers: {ex.Message}");
+            }
+        }
+        private string SaveEmployersImage(IFormFile image)
+        {
+            try
+            {
+                string currentDateFolder = DateTime.Now.ToString("dd-MM-yyyy");
+                string imagesFolder = Path.Combine(@"C:\Users\Xuanthai98\OneDrive\Máy tính\ImageSlide", "Prodycts_images", currentDateFolder);
+                if (!Directory.Exists(imagesFolder))
+                {
+                    Directory.CreateDirectory(imagesFolder);
+                }
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+                string filePath = Path.Combine(imagesFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    image.CopyTo(stream);
+                }
+                return filePath;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred while saving the image: {ex.Message}");
             }
         }
     }

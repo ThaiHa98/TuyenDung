@@ -15,11 +15,13 @@ namespace TuyenDung.Service.Services.RepositoryServices
         private readonly MyDb _dbContext;
         private readonly IJobsInterface _iJobsInterface;
         private readonly IDistributedCache _distributedCache;
-        public JobsService(MyDb dbContext, IJobsInterface iJobsInterface, IDistributedCache distributedCache)
+        private readonly IEmployersInterface _employersInterface;
+        public JobsService(MyDb dbContext, IJobsInterface iJobsInterface, IDistributedCache distributedCache, IEmployersInterface employersInterface)
         {
             _distributedCache = distributedCache;
             _dbContext = dbContext;
             _iJobsInterface = iJobsInterface;
+            _employersInterface = employersInterface;
         }
         public Jobs Create(JobsDto jobsDto)
         {
@@ -29,14 +31,14 @@ namespace TuyenDung.Service.Services.RepositoryServices
                 {
                     throw new ArgumentNullException(nameof(jobsDto), "All data fields have not been filled in");
                 }
-                var employers = _iJobsInterface.GetById(jobsDto.EmployerId);
+                var employers = _employersInterface.GetById(jobsDto.EmployerId);
                 if (employers == null)
                 {
                     throw new Exception("employersId not found");
                 }
                 Jobs jobs = new Jobs
                 {
-                    EmployerId = employers.EmployerId,
+                    EmployerId = employers.Id,
                     Name = jobsDto.Name,
                     Title = jobsDto.Title,
                     Description = jobsDto.Description,

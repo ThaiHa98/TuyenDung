@@ -16,9 +16,9 @@ namespace TuyenDung.Service.Repository.Repository
         {
             _dbContext = dbContext;
         }
-        public Jobs GetById(int id)
+        public Jobs GetById(int EmployerId)
         {
-            return _dbContext.Jobs.FirstOrDefault(x => x.Id == id);
+            return _dbContext.Jobs.FirstOrDefault(x => x.Id == EmployerId);
         }
     }
 }
