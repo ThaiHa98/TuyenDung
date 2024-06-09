@@ -66,6 +66,23 @@ namespace TuyenDung.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FormCvs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CvFilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FormCvs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Job_Seekers",
                 columns: table => new
                 {
@@ -161,6 +178,9 @@ namespace TuyenDung.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Applications");
+
+            migrationBuilder.DropTable(
+                name: "FormCvs");
 
             migrationBuilder.DropTable(
                 name: "Job_Seekers");

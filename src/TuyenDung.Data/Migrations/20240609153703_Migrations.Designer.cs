@@ -12,7 +12,7 @@ using TuyenDung.Data.DataContext;
 namespace TuyenDung.Data.Migrations
 {
     [DbContext(typeof(MyDb))]
-    [Migration("20240605183940_Migrations")]
+    [Migration("20240609153703_Migrations")]
     partial class Migrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -133,6 +133,37 @@ namespace TuyenDung.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Employers");
+                });
+
+            modelBuilder.Entity("TuyenDung.Data.Model.FormCv", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("CvFilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FormCvs");
                 });
 
             modelBuilder.Entity("TuyenDung.Data.Model.Job_seekers", b =>

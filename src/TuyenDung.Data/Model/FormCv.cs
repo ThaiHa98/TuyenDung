@@ -13,7 +13,7 @@ namespace TuyenDung.Data.Model
         public int Id { get; set; }
         public string Title { get; set; } // Tiêu đề của CV
         public string Description { get; set; } // Mô tả chi tiết về CV
-        public string TemplatePath { get; set; } // Đường dẫn đến file template của CV
+        public string CvFilePath { get; set; } // Đường dẫn đến file template của CV
         public DateTime DateCreated { get; set; } // Ngày tạo CV
         public int UserId { get; set; } // ID người dùng đã tạo CV (nếu cần thiết)
     }

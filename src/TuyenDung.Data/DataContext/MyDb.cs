@@ -19,6 +19,7 @@ namespace TuyenDung.Data.DataContext
         public DbSet<Jobs> Jobs { get; set; }
         public DbSet<Messages> Messages { get; set; }
         public DbSet<AccessToken> AccessTokens { get; set; }
+        public DbSet<FormCv> FormCvs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

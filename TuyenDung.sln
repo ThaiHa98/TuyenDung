@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TuyenDung.Service", "src\Tu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{2E97C2FC-A2CC-4D86-B6AD-4A9C652AC049}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TuyenDung.ServiceGmail", "src\TuyenDung.ServiceGmail\TuyenDung.ServiceGmail.csproj", "{7A175D53-680C-43D4-8147-C020A556A7B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{5B37534E-F4A3-49AA-A8EC-DA113875FCB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B37534E-F4A3-49AA-A8EC-DA113875FCB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B37534E-F4A3-49AA-A8EC-DA113875FCB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A175D53-680C-43D4-8147-C020A556A7B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A175D53-680C-43D4-8147-C020A556A7B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A175D53-680C-43D4-8147-C020A556A7B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A175D53-680C-43D4-8147-C020A556A7B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +43,7 @@ Global
 		{E4172FE0-374D-4DC3-B931-1B040A2872C2} = {2E97C2FC-A2CC-4D86-B6AD-4A9C652AC049}
 		{30708BCC-2D54-486D-8918-03AA21F5CD51} = {2E97C2FC-A2CC-4D86-B6AD-4A9C652AC049}
 		{5B37534E-F4A3-49AA-A8EC-DA113875FCB7} = {2E97C2FC-A2CC-4D86-B6AD-4A9C652AC049}
+		{7A175D53-680C-43D4-8147-C020A556A7B2} = {2E97C2FC-A2CC-4D86-B6AD-4A9C652AC049}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FD68A618-133A-4863-A403-CB1D5691EC3E}
