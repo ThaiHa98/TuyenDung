@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using TuyenDung.API.Common;
 using TuyenDung.Data.Dto;
+using TuyenDung.Service.Repository.Interface;
 using TuyenDung.Service.Services.InterfaceIServices;
 
 namespace TuyenDung.API.Controllers
@@ -12,8 +13,10 @@ namespace TuyenDung.API.Controllers
     public class formCvsController : ControllerBase
     {
         private readonly IFormCvIService _formCvIService;
-        public formCvsController(IFormCvIService formCvIService)
+        private readonly IFormCvInterface _formCvInterface;
+        public formCvsController(IFormCvIService formCvIService,IFormCvInterface formCvInterface)
         {
+            _formCvInterface = formCvInterface;
             _formCvIService = formCvIService;
         }
         [HttpPost("Create")]
@@ -106,6 +109,33 @@ namespace TuyenDung.API.Controllers
                     message = ex.Message
                 });
             }
+        }
+        [HttpGet("GetAll")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public IActionResult GetAdd()
+        {
+            try
+            {
+                var getall = _formCvInterface.GetFormCv();
+                return Ok(new XBaseResult
+                {
+                    data = getall,
+                    success = true,
+                    httpStatusCode = (int)HttpStatusCode.OK,
+                    message = "Delete Successfully"
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new XBaseResult
+                {
+                    success = false,
+                    httpStatusCode = (int)HttpStatusCode.BadRequest,
+                    message = ex.Message
+                });
+            }
+
         }
     }
 }

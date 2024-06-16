@@ -12,11 +12,11 @@ namespace TuyenDung.Data.Model
     {
         [Key]
         public int Id { get; set; }
-        public int JobId { get; set; }
-        public int UserId { get; set; }
+        public int Job_JobId { get; set; }
+        public int User_UserId { get; set; }
         public StatusApplication Status { get; set; }
         public DateTime Date { get; set; }
         public StatusSubmissionType StatusSubmissionType { get; set; }
-        public string CvFilePath { get; set; } // Chi tiết gửi CV
+        public string CvFilePath { get; set; }
     }
 }

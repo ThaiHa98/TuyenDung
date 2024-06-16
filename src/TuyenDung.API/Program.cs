@@ -25,6 +25,10 @@ builder.Services.AddScoped<IJobsIService, JobsService>();
 builder.Services.AddScoped<IJob_seekersIService, Job_seekersService>();
 builder.Services.AddScoped<IEmployersInterface, EmployersRepository>();
 builder.Services.AddScoped<IEmployersIService, EmployersService>();
+builder.Services.AddScoped<IApplicationsIService, ApplicationsService>();
+builder.Services.AddScoped<IFormCvInterface,FormCvRepository>();
+builder.Services.AddScoped<IFormCvIService, FormCvService>();
+builder.Services.AddScoped<IMessagesIService, MessagesService>();
 
 builder.Configuration
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -59,6 +63,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "TuyenDungAPI", Version = "v1" });
+
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
@@ -68,6 +73,7 @@ builder.Services.AddSwaggerGen(options =>
         BearerFormat = "JWT",
         Scheme = "Bearer"
     });
+
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -79,10 +85,14 @@ builder.Services.AddSwaggerGen(options =>
                     Id = "Bearer"
                 }
             },
-            new string[] {}
+            Array.Empty<string>()
         }
     });
+
+    // Giải quyết các hành động xung đột
+    options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
 });
+
 
 builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication(option =>

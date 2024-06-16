@@ -9,6 +9,7 @@ using TuyenDung.Data.DataContext;
 using TuyenDung.Data.Dto;
 using TuyenDung.Data.Model;
 using TuyenDung.Data.Model.Enum;
+using TuyenDung.Service.Repository.Interface;
 using TuyenDung.Service.Services.InterfaceIServices;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -17,52 +18,64 @@ namespace TuyenDung.Service.Services.RepositoryServices
     public class ApplicationsService : IApplicationsIService
     {
         private readonly MyDb _dbContext;
-        public ApplicationsService(MyDb dbContext)
+        private readonly IFormCvInterface _formCvInterface;
+        public ApplicationsService(MyDb dbContext,IFormCvInterface formCvInterface)
         {
+            _formCvInterface = formCvInterface;
             _dbContext = dbContext;
         }
         public Applications Create(ApplicationsDto applicationsDto, IFormFile formFile)
         {
-            try
+            using (var transaction = _dbContext.Database.BeginTransaction())
             {
-                var app = _dbContext.Jobs.FirstOrDefault(x => x.Id == applicationsDto._JobId);
-                if (app == null)
+                try
                 {
-                    throw new Exception("App not found");
-                }
-                var user = _dbContext.Users.FirstOrDefault(x => x.Id == applicationsDto._UserId);
-                if (user == null)
-                {
-                    throw new Exception("User not found");
-                }
-                Applications applications = new Applications
-                {
-                    JobId = app.Id,
-                    UserId = user.Id,
-                    Status = StatusApplication.Pending,
-                    Date = DateTime.Now,
-                    StatusSubmissionType = StatusSubmissionType.Online,
-                };
-                if (formFile != null && formFile.Length > 0)
-                {
-                    try
+                    var app = _dbContext.Jobs.FirstOrDefault(x => x.Id == applicationsDto._JobId);
+                    if (app == null)
                     {
-                        string documentPath = SaveDocumentFile(formFile);
-                        applications.CvFilePath = documentPath;
+                        throw new Exception("App not found");
+                    }
 
-                        _dbContext.Applications.Add(applications);
-                        _dbContext.SaveChanges();
-                    }
-                    catch (Exception ex)
+                    var user = _dbContext.Users.FirstOrDefault(x => x.Id == applicationsDto._UserId);
+                    if (user == null)
                     {
-                        throw new Exception("An error occurred while processing the application.", ex);
+                        throw new Exception("User not found");
                     }
+
+                    Applications applications = new Applications
+                    {
+                        Job_JobId = app.Id,
+                        User_UserId = user.Id,
+                        Status = StatusApplication.Pending,
+                        Date = DateTime.Now,
+                        StatusSubmissionType = StatusSubmissionType.Online,
+                    };
+
+                    if (formFile != null && formFile.Length > 0)
+                    {
+                        try
+                        {
+                            string documentPath = SaveDocumentFile(formFile);
+                            applications.CvFilePath = documentPath;
+
+                            _dbContext.Applications.Add(applications);
+                            _dbContext.SaveChanges();
+
+                            transaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback();
+                            throw new Exception("An error occurred while processing the application.", ex);
+                        }
+                    }
+
+                    return applications;
                 }
-                return applications;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("There is an error when creating a applications", ex);
+                catch (Exception ex)
+                {
+                    throw new Exception("There is an error when creating an application", ex);
+                }
             }
         }
 
@@ -82,6 +95,29 @@ namespace TuyenDung.Service.Services.RepositoryServices
             catch(Exception ex)
             {
                 throw new Exception("There was an error deleteting the Applications",ex);
+            }
+        }
+
+        public List<FormCv> GetListFormCv()
+        {
+            try
+            {
+                var formCvList = _formCvInterface.GetFormCv();
+                var wordCvList = new List<FormCv>();
+
+                foreach (var formCv in formCvList)
+                {
+                    if (IsWordFile(formCv.CvFilePath))
+                    {
+                        wordCvList.Add(formCv);
+                    }
+                }
+
+                return wordCvList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while getting the list of Word files.", ex);
             }
         }
 
@@ -138,6 +174,11 @@ namespace TuyenDung.Service.Services.RepositoryServices
             {
                 throw new Exception($"An error occurred while saving the document: {ex.Message}");
             }
+        }
+        private bool IsWordFile(string filePath)
+        {
+            string extension = Path.GetExtension(filePath);
+            return extension.ToLower() == ".doc" || extension.ToLower() == ".docx";
         }
     }
 }

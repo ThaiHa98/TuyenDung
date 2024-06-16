@@ -10,9 +10,9 @@ namespace TuyenDung.Data.Model
     public class Job_seekers //Người tìm việc
     {
         [Key]
-        public int Id {  get; set; }
+        public int Id { get; set; }
         public int UserId { get; set; }
-        public string Name { get; set; }
+        public string User_Name { get; set; }
         public string Image { get; set; }
         public string DateofBirth { get; set; }
         public string Gender { get; set; }

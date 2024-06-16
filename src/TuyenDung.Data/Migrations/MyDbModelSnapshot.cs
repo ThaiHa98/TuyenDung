@@ -62,7 +62,7 @@ namespace TuyenDung.Data.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("JobId")
+                    b.Property<int>("Job_JobId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -73,7 +73,7 @@ namespace TuyenDung.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("User_UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -187,12 +187,12 @@ namespace TuyenDung.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
+
+                    b.Property<string>("User_Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

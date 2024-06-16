@@ -11,7 +11,7 @@ namespace TuyenDung.Service.Services.InterfaceIServices
 {
     public interface IJob_seekersIService
     {
-        public Job_seekers Create(Job_seekersDto job_seekersDto, IFormFile image);
+        public Job_seekers Create(Job_seekersDto1 Job_seekersDto1, IFormFile image, IFormFile formFile);
         Job_seekers Update(Job_seekersDto job_seekersDto, IFormFile image);
         bool Delete(int job_seekersid);
     }

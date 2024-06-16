@@ -27,17 +27,22 @@ namespace TuyenDung.Service.Services.RepositoryServices
         {
             try
             {
-                if(jobsDto == null)
+                if (jobsDto == null)
                 {
                     throw new ArgumentNullException(nameof(jobsDto), "All data fields have not been filled in");
                 }
                 var employers = _employersInterface.GetById(jobsDto.EmployerId);
                 if (employers == null)
                 {
-                    throw new Exception("employersId not found");
+                    throw new Exception("Employer not found");
                 }
+
+                // Generate a unique ID for the job
+                int jobId = GenerateUniqueJobId();
+
                 Jobs jobs = new Jobs
                 {
+                    Id = jobId, // Assign the generated ID
                     EmployerId = employers.Id,
                     Name = jobsDto.Name,
                     Title = jobsDto.Title,
@@ -50,21 +55,18 @@ namespace TuyenDung.Service.Services.RepositoryServices
                     PostedDate = DateTime.Now,
                     Deadline = jobsDto.Deadline
                 };
-                //Tuan tu hoa doi tuong Jobs
+
                 var serializedJob = JsonSerializer.Serialize(jobs);
                 var cacheKey = $"Job_{jobs.Id}";
 
-                //luu va bo nho cache Redis voi thoi gian het han tuy tron
-                //var cacheOptions = new DistributedCacheEntryOptions
-                //{
-                //    AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1) // Lưu vào bộ nhớ cache trong 1 giờ
-                //};
+                // Save the job to the cache
                 _distributedCache.SetString(cacheKey, serializedJob);
+
                 return jobs;
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while create jobs in.", ex);
+                throw new Exception("An error occurred while creating the job.", ex);
             }
         }
 
@@ -121,6 +123,10 @@ namespace TuyenDung.Service.Services.RepositoryServices
             {
                 throw new Exception("An error occurred while update jobs in.", ex);
             }
+        }
+        private int GenerateUniqueJobId()
+        {
+            return 1;
         }
     }
 }

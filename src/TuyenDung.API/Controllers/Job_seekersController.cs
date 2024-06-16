@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using TuyenDung.API.Common;
 using TuyenDung.Data.Dto;
+using TuyenDung.Service.Repository.Interface;
 using TuyenDung.Service.Services.InterfaceIServices;
 
 namespace TuyenDung.API.Controllers
@@ -12,31 +13,40 @@ namespace TuyenDung.API.Controllers
     public class Job_seekersController : ControllerBase
     {
         private readonly IJob_seekersIService _job_SeekersIService;
-        public Job_seekersController(IJob_seekersIService job_SeekersService)
+        private readonly IFormCvInterface _formCvInterface;
+        public Job_seekersController(IJob_seekersIService job_SeekersService,IFormCvInterface formCvInterface)
         {
+            _formCvInterface = formCvInterface;
             _job_SeekersIService = job_SeekersService;
         }
         [HttpPost("Create")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public IActionResult Create([FromForm]Job_seekersDto job_seekersDto,[FromForm] IFormFile image)
+        public IActionResult Create([FromForm] Job_seekersDto1 job_seekersDto1, IFormFile image, [FromForm] IFormFile formFile)
         {
             try
             {
-                if(job_seekersDto == null || image == null)
+                if (job_seekersDto1 == null)
                 {
-                    return BadRequest("job_seekersDto & image not found");
+                    return BadRequest("job_seekersDto1 not found");
                 }
-                var createjob_seekers = _job_SeekersIService.Create(job_seekersDto, image);
+
+                if (image == null)
+                {
+                    return BadRequest("image not found");
+                }
+
+                var createJob_seekers = _job_SeekersIService.Create(job_seekersDto1, image, formFile);
+
                 return Ok(new XBaseResult
                 {
-                    data = createjob_seekers,
+                    data = createJob_seekers,
                     success = true,
                     httpStatusCode = (int)HttpStatusCode.OK,
                     message = "Create job_seekers Successfully"
                 });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(new XBaseResult
                 {
