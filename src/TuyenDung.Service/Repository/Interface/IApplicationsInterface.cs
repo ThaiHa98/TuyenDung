@@ -7,9 +7,9 @@ using TuyenDung.Data.Model;
 
 namespace TuyenDung.Service.Repository.Interface
 {
-    public interface IFormCvInterface
+    public interface IApplicationsInterface
     {
-        public List<FormCv> GetFormCv();
-        public FormCv GetFormCvId(int id);
+        public Applications GetFormCvId(int id);
+        public string ExtractTextFromDocx(string cvFilePath);
     }
 }

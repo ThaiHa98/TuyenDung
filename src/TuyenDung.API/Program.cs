@@ -29,6 +29,7 @@ builder.Services.AddScoped<IApplicationsIService, ApplicationsService>();
 builder.Services.AddScoped<IFormCvInterface,FormCvRepository>();
 builder.Services.AddScoped<IFormCvIService, FormCvService>();
 builder.Services.AddScoped<IMessagesIService, MessagesService>();
+builder.Services.AddScoped<IApplicationsInterface, ApplicationsRepository>();
 
 builder.Configuration
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -139,3 +140,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+app.UseStaticFiles();

@@ -135,7 +135,24 @@ namespace TuyenDung.API.Controllers
                     message = ex.Message
                 });
             }
-
+        }
+        [HttpGet("CvFilePath/formCV/{id}")]
+        public IActionResult GetAllFormCV(int id)
+        {
+            try
+            {
+                var formCV = _formCvInterface.GetFormCvId(id);
+                if (formCV == null || string.IsNullOrEmpty(formCV.CvFilePath))
+                {
+                    return NotFound("CvFilePath not found!");
+                }
+                var cvFilePath = _formCvIService.ExtractTextFromDocx(formCV.CvFilePath);
+                return Ok(cvFilePath);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, $"An error occurred: {e.Message}");
+            }
         }
     }
 }

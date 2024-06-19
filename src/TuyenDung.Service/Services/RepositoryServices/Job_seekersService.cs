@@ -172,8 +172,7 @@ namespace TuyenDung.Service.Services.RepositoryServices
                 {
                     throw new Exception("Định dạng tệp không hợp lệ.");
                 }
-                string currentDateFolder = DateTime.Now.ToString("dd-MM-yyyy");
-                string filesFolder = Path.Combine(@"C:\Users\Xuanthai98\OneDrive\Máy tính\ImageSlide\FormCv", currentDateFolder);
+                string filesFolder = Path.Combine(@"C:\Users\Xuanthai98\OneDrive\Máy tính\ImageSlide\CV");
                 if (!Directory.Exists(filesFolder))
                 {
                     Directory.CreateDirectory(filesFolder);

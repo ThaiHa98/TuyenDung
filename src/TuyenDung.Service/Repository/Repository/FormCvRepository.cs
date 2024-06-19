@@ -18,23 +18,25 @@ namespace TuyenDung.Service.Repository.Repository
         }
         public List<FormCv> GetFormCv()
         {
-            string directoryPath = @"C:\Users\Xuanthai98\OneDrive\Máy tính\ImageSlide\FormCv";
-            var formCvList = new List<FormCv>();
-            if (Directory.Exists(directoryPath))
+            try
             {
-                var files = Directory.GetFiles(directoryPath);
-                foreach (var file in files)
-                {
-                    var formCv = new FormCv
-                    {
-                        CvFilePath = file,
-                    };
-
-                    formCvList.Add(formCv);
-                }
+                return _dbContext.FormCvs.ToList();
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Có lỗi xảy ra khi lấy danh sách FormCv: {ex.Message}");
+                return new List<FormCv>();
+            }
+        }
 
-            return formCvList;
+        public FormCv GetFormCvId(int id)
+        {
+            var query = _dbContext.FormCvs.FirstOrDefault(x => x.UserId == id);
+            if(query == null)
+            {
+                throw new Exception("Id not found");
+            }
+            return query;
         }
     }
 }

@@ -9,5 +9,7 @@ namespace TuyenDung.Service.Services.InterfaceIServices
         public Applications Create(ApplicationsDto applicationsDto, IFormFile formFile);
         string Update(int Id, IFormFile formFile);
         bool Delete(int Id);
+
+
     }
 }
